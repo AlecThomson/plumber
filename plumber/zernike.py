@@ -569,8 +569,12 @@ class zernikeBeam():
         imcdelt = (imextent/shape[0])
 
         templatecoord = imregrid(templateim)
+
+        # NOTE : Not forcing Stokes because it crashes when the input MFS map has 4 planes.
+        # The work-around is to generate a 4 plane output image, and then split out only one
+        # plane, and delete the original.
         # We are only generating one stokes plane at a time, so force stokes planes = 1
-        templatecoord['shap'][-1] = 1
+        #templatecoord['shap'][-1] = 1
 
         crpix = np.unravel_index(np.argmax(dat), shape)
         outcsys = deepcopy(templatecsys)

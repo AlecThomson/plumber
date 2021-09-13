@@ -58,6 +58,7 @@ def main(imagename, csv, padding, dish_dia, islinear, stokesi, parallel, parang)
     zdf, zfreq, nstokes = get_zcoeffs(csv, imfreq)
 
     logger.info(f"Image is at {imfreq:.2f} MHz. Model PB will be generated at {zfreq:.2f} MHz")
+    logger.info(f"Found {nstokes} Stokes planes in input image. Output images will also be concatenated")
 
     zb = zernikeBeam()
     zb.initialize(zdf, imagename, padfac=padding, dish_dia=dish_dia,

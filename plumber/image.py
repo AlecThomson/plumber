@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import numpy as np
 from casatools import image
 ia = image()
 
@@ -42,6 +43,7 @@ def parse_image(imagename):
     imsize              Size of the direction coordinates in pixels, array
     reffreq             Reference frequency of the image in MHz, float
     is_cube             Flag to indicate if the image is a cube, bool
+    nstokes             Number of Stokes planes in the input image, int
     """
 
     ia.open(imagename)
@@ -49,6 +51,9 @@ def parse_image(imagename):
     csys = ia.coordsys().torecord()
     summary = ia.summary(list=False, verbose=False)
     ia.close()
+
+    stokesax = np.where(summary['axisnames'] == 'Stokes')[0][0]
+    nstokes = shape[stokesax]
 
     is_cube = check_if_cube(summary)
     imsize = [shape[0], shape[1]]
@@ -65,4 +70,4 @@ def parse_image(imagename):
 
     reffreq /= factor
 
-    return imsize, reffreq, is_cube
+    return imsize, reffreq, is_cube, nstokes
